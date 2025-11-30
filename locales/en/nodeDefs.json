@@ -1,0 +1,174 @@
+{
+  "WanVideoIntegratedKSampler": {
+    "display_name": "🐳 WanVideo Integrated KSampler - Github:﹫luguoli",
+    "description": "🐳 WanVideo Integrated KSampler - Github: https://github.com/luguoli - K-sampler for video generation with integrated high/low noise stages, supports text-to-video/image-to-video modes, supports generating videos with start/end frames, batch generation, automatic VRAM/RAM management, sage attention, block swapping, SD3 sampling, sound notifications and more comprehensive features, no need to connect so many wires~~~~ - 📧Email: luguoli﹫vip.qq.com",
+    "inputs": {
+      "model_high_noise": {
+        "name": "🔥 High Noise Model",
+        "tooltip": "🔥 High Noise Model - Diffusion model for high noise phase (first stage)"
+      },
+      "model_low_noise": {
+        "name": "❄️ Low Noise Model",
+        "tooltip": "❄️ Low Noise Model - Diffusion model for low noise phase (second stage)"
+      },
+      "clip": {
+        "name": "🟡 CLIP",
+        "tooltip": "🟡 CLIP - CLIP model for text encoding and conditioning"
+      },
+      "vae": {
+        "name": "🎨 VAE",
+        "tooltip": "🎨 VAE - VAE model for encoding/decoding images to/from latent space"
+      },
+      "positive_prompt": {
+        "name": "✅ Positive Prompt",
+        "tooltip": "✅ Positive Prompt - Text prompt describing desired video content and features"
+      },
+      "negative_prompt": {
+        "name": "❌ Negative Prompt",
+        "tooltip": "❌ Negative Prompt - Text prompt describing unwanted video elements to avoid"
+      },
+      "batch_size": {
+        "name": "📦 Batch Size",
+        "tooltip": "📦 Batch Size - Number of videos to generate in parallel"
+      },
+      "length": {
+        "name": "📽️ Frame Length",
+        "tooltip": "📽️ Frame Length - Number of frames in the generated video"
+      },
+      "width": {
+        "name": "📐 Width",
+        "tooltip": "📐 Width - Video width in pixels (will be auto-adjusted to multiple of 8)"
+      },
+      "height": {
+        "name": "📏 Height",
+        "tooltip": "📏 Height - Video height in pixels (will be auto-adjusted to multiple of 8)"
+      },
+      "steps_high_noise": {
+        "name": "📊 High Noise Steps",
+        "tooltip": "📊 High Noise Steps - Sampling steps for high noise phase (first stage)"
+      },
+      "cfg_high_noise": {
+        "name": "🎛️ High Noise CFG",
+        "tooltip": "🎛️ High Noise CFG - Used in high noise phase to balance randomness and prompt adherence. Increasing this value will make the results more aligned with the prompt, but too high may lead to decreased quality."
+      },
+      "steps_low_noise": {
+        "name": "📊 Low Noise Steps",
+        "tooltip": "📊 Low Noise Steps - Sampling steps for low noise phase (second stage)"
+      },
+      "cfg_low_noise": {
+        "name": "🎛️ Low Noise CFG",
+        "tooltip": "🎛️ Low Noise CFG - Used in low noise phase to balance randomness and prompt adherence. Increasing this value will make the results more aligned with the prompt, but too high may lead to decreased quality."
+      },
+      "noise_seed": {
+        "name": "🎲 Noise Seed",
+        "tooltip": "🎲 Noise Seed - Random seed for noise generation, identical seeds produce identical results"
+      },
+      "sampler_name": {
+        "name": "🌀 Sampler",
+        "tooltip": "🌀 Sampler - Sampling algorithm that affects result quality, generation speed, and style."
+      },
+      "scheduler": {
+        "name": "📈 Scheduler",
+        "tooltip": "📈 Scheduler - Noise scheduling method that controls how noise is gradually removed"
+      },
+      "start_image": {
+        "name": "🖼️ Start Image (Optional)",
+        "tooltip": "🖼️ Start Image (Optional) - First frame image for video generation (img2vid mode)"
+      },
+      "end_image": {
+        "name": "🖼️ End Image (Optional)",
+        "tooltip": "🖼️ End Image (Optional) - Last frame image for video generation"
+      },
+      "clip_vision": {
+        "name": "👁️ CLIP Vision (Optional)",
+        "tooltip": "👁️ CLIP Vision (Optional) - CLIP Vision model to encode reference images for conditioning"
+      },
+      "latent": {
+        "name": "🟣 Latent (Optional)",
+        "tooltip": "🟣 Latent (Optional) - Pre-existing latent space input (overrides automatic latent creation)"
+      },
+      "torch_enable_fp16_accumulation": {
+        "name": "⚡ Torch FP16 Accumulation",
+        "tooltip": "⚡ Torch FP16 Accumulation - Enable torch.backend.cuda.matmul.allow_fp16_accumulation for better VRAM efficiency (requires pytorch 2.7.0+)"
+      },
+      "sage_attention": {
+        "name": "🧠 Sage Attention",
+        "tooltip": "🧠 Sage Attention - Global patch comfy attention to use sageattn, dramatically improves speed and VRAM usage, once enabled revert by re-running with disabled"
+      },
+      "wan_blocks_to_swap": {
+        "name": "🔄 WAN Blocks to Swap",
+        "tooltip": "🔄 WAN Blocks to Swap - Number of transformer blocks to swap to CPU for low-VRAM usage (14B model has 40 blocks, 1.3B has 30)"
+      },
+      "sd3_shift": {
+        "name": "⚙️ ModelSampling SD3 Shift",
+        "tooltip": "⚙️ ModelSampling SD3 Shift - SD3 sampling algorithm shift parameter for controlling generation behavior"
+      },
+      "enable_clean_gpu_memory": {
+        "name": "🗑️ Clean GPU Memory",
+        "tooltip": "🗑️ Clean GPU Memory - Clean GPU memory before sampling and after decoding to free VRAM for other tasks"
+      },
+      "enable_clean_cpu_memory_after_finish": {
+        "name": "🗑️ Clean CPU Memory After Finish",
+        "tooltip": "🗑️ Clean CPU Memory After Finish - Clean CPU memory after generation completes"
+      },
+      "enable_sound_notification": {
+        "name": "🔊 Sound Notification",
+        "tooltip": "🔊 Sound Notification - Play notification sound when generation completes"
+      }
+    },
+    "WanVideoIntegratedKSamplerSimple": {
+      "display_name": "🐳 WanVideo Integrated KSampler (Simple) - Github:﹫luguoli",
+      "description": "🐳 WanVideo Integrated KSampler (Simple) - Github: https://github.com/luguoli - Simplified version of K-sampler for video generation, integrated high/low noise stages, designed for advanced users, direct two-stage sampling with pre-conditioned models, no need to connect so many wires~~~~ - 📧Email: luguoli﹫vip.qq.com",
+      "inputs": {
+        "model_high_noise": {
+          "name": "🔥 High Noise Model",
+          "tooltip": "🔥 High Noise Model - Diffusion model for high noise phase (first stage)"
+        },
+        "model_low_noise": {
+          "name": "❄️ Low Noise Model",
+          "tooltip": "❄️ Low Noise Model - Diffusion model for low noise phase (second stage)"
+        },
+        "steps_high_noise": {
+          "name": "📊 High Noise Steps",
+          "tooltip": "📊 High Noise Steps - Sampling steps for high noise phase"
+        },
+        "cfg_high_noise": {
+          "name": "🎛️ High Noise CFG",
+          "tooltip": "🎛️ High Noise CFG - Used in high noise phase to balance randomness and prompt adherence. Increasing this value will make the results more aligned with the prompt, but too high may lead to decreased quality."
+        },
+        "steps_low_noise": {
+          "name": "📊 Low Noise Steps",
+          "tooltip": "📊 Low Noise Steps - Sampling steps for low noise phase"
+        },
+        "cfg_low_noise": {
+          "name": "🎛️ Low Noise CFG",
+          "tooltip": "🎛️ Low Noise CFG - Used in low noise phase to balance randomness and prompt adherence. Increasing this value will make the results more aligned with the prompt, but too high may lead to decreased quality."
+        },
+        "noise_seed": {
+          "name": "🎲 Noise Seed",
+          "tooltip": "🎲 Noise Seed - Random seed for noise generation"
+        },
+        "sampler_name": {
+          "name": "🌀 Sampler",
+          "tooltip": "🌀 Sampler - Sampling algorithm that affects result quality, generation speed, and style."
+        },
+        "scheduler": {
+          "name": "📈 Scheduler",
+          "tooltip": "📈 Scheduler - Noise scheduling method"
+        },
+        "positive": {
+          "name": "✅ Positive Conditioning",
+          "tooltip": "✅ Positive Conditioning - Pre-encoded positive conditioning input"
+        },
+        "negative": {
+          "name": "❌ Negative Conditioning",
+          "tooltip": "❌ Negative Conditioning - Pre-encoded negative conditioning input"
+        },
+        "latent": {
+          "name": "🟣 Latent",
+          "tooltip": "🟣 Latent - Latent space input for sampling"
+        }
+      }
+    }
+  }
+}

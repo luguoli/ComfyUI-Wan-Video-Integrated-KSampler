@@ -1,0 +1,174 @@
+{
+  "WanVideoIntegratedKSampler": {
+    "display_name": "🐳 WanVideo视频集成采样器 - Github:﹫luguoli",
+    "description": "🐳 WanVideo视频集成采样器 - Github: https://github.com/luguoli - K采样器，视频生成采样器，高低噪集成，支持文生视频/图生视频模式，支持首尾帧生成视频，批量生成、自动显存/内存管理、sage注意力、块交换、SD3采样、声音通知等全方位功能，不需要连那么多线啦~~~~ - 📧Email: luguoli﹫vip.qq.com",
+    "inputs": {
+      "model_high_noise": {
+        "name": "🔥 高噪模型",
+        "tooltip": "🔥 高噪模型 - 用于高噪阶段（第一阶段）的扩散模型"
+      },
+      "model_low_noise": {
+        "name": "❄️ 低噪模型",
+        "tooltip": "❄️ 低噪模型 - 用于低噪阶段（第二阶段）的扩散模型"
+      },
+      "clip": {
+        "name": "🟡 CLIP",
+        "tooltip": "🟡 CLIP - CLIP模型，用于文本编码和条件生成"
+      },
+      "vae": {
+        "name": "🎨 VAE",
+        "tooltip": "🎨 VAE - VAE模型，用于编码/解码图像到潜空间"
+      },
+      "positive_prompt": {
+        "name": "✅ 正向提示词",
+        "tooltip": "✅ 正向提示词 - 描述期望视频内容的文本提示"
+      },
+      "negative_prompt": {
+        "name": "❌ 负向提示词",
+        "tooltip": "❌ 负向提示词 - 描述要避免的视频元素的文本提示"
+      },
+      "batch_size": {
+        "name": "📦 批次数量",
+        "tooltip": "📦 批次数量 - 并行生成视频的数量"
+      },
+      "length": {
+        "name": "📽️ 帧长度",
+        "tooltip": "📽️ 帧长度 - 生成视频的帧数"
+      },
+      "width": {
+        "name": "📐 宽度",
+        "tooltip": "📐 宽度 - 视频宽度像素（将自动调整为8的倍数）"
+      },
+      "height": {
+        "name": "📏 高度",
+        "tooltip": "📏 高度 - 视频高度像素（将自动调整为8的倍数）"
+      },
+      "steps_high_noise": {
+        "name": "📊 高噪步数",
+        "tooltip": "📊 高噪步数 - 高噪阶段的采样步数（第一阶段）"
+      },
+      "cfg_high_noise": {
+        "name": "🎛️ 高噪CFG",
+        "tooltip": "🎛️ 高噪CFG - 用于高噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"
+      },
+      "steps_low_noise": {
+        "name": "📊 低噪步数",
+        "tooltip": "📊 低噪步数 - 低噪阶段的采样步数（第二阶段）"
+      },
+      "cfg_low_noise": {
+        "name": "🎛️ 低噪CFG",
+        "tooltip": "🎛️ 低噪CFG - 用于低噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"
+      },
+      "noise_seed": {
+        "name": "🎲 噪波种子",
+        "tooltip": "🎲 噪波种子 - 噪波生成的随机种子，相同种子产生相同结果"
+      },
+      "sampler_name": {
+        "name": "🌀 采样器",
+        "tooltip": "🌀 采样器 - 采样算法，会影响结果质量、生成速度、风格样式。"
+      },
+      "scheduler": {
+        "name": "📈 调度器",
+        "tooltip": "📈 调度器 - 控制逐渐移除噪波的方法。"
+      },
+      "start_image": {
+        "name": "🖼️ 首帧图像（可选）",
+        "tooltip": "🖼️ 首帧图像（可选） - 不输入默认为文生视频"
+      },
+      "end_image": {
+        "name": "🖼️ 尾帧图像（可选）",
+        "tooltip": "🖼️ 尾帧图像（可选） - 必须同时输入首帧"
+      },
+      "clip_vision": {
+        "name": "👁️ CLIP Vision（可选）",
+        "tooltip": "👁️ CLIP Vision（可选） - CLIP Vision模型，用于编码参考图像进行条件生成"
+      },
+      "latent": {
+        "name": "🟣 Latent（可空）",
+        "tooltip": "🟣 Latent（可空） - 如需使用ControlNet等可自行传入，内置图像处理将失效，例如首尾帧"
+      },
+      "torch_enable_fp16_accumulation": {
+        "name": "⚡ Torch FP16累加",
+        "tooltip": "⚡ Torch FP16累加 - 启用torch.backend.cuda.matmul.allow_fp16_accumulation以获得更好的VRAM效率（需要pytorch 2.7.0+）"
+      },
+      "sage_attention": {
+        "name": "🧠 Sage注意力",
+        "tooltip": "🧠 Sage注意力 - 全局修补comfy注意力以使用sageattn，大幅提升速度和VRAM使用效率"
+      },
+      "wan_blocks_to_swap": {
+        "name": "🔄 WAN块交换数量",
+        "tooltip": "🔄 WAN块交换数量 - 交换到CPU的transformer块数量以实现低VRAM使用（14B模型有40块，1.3B有30块）"
+      },
+      "sd3_shift": {
+        "name": "⚙️ 采样算法SD3移位",
+        "tooltip": "⚙️ 采样算法SD3移位 - SD3采样算法移位参数，用于控制生成行为"
+      },
+      "enable_clean_gpu_memory": {
+        "name": "🗑️ 清理显存占用",
+        "tooltip": "🗑️ 清理显存占用 - 在采样/解码前后清理显存占用，以释放资源给其他应用"
+      },
+      "enable_clean_cpu_memory_after_finish": {
+        "name": "🗑️ 完成后清理内存",
+        "tooltip": "🗑️ 完成后清理内存 - 生成完成后清理CPU内存"
+      },
+      "enable_sound_notification": {
+        "name": "🔊 完成后播放声音",
+        "tooltip": "🔊 完成后播放声音 - 解码完成后播放通知声音以提醒用户"
+      }
+    }
+  },
+  "WanVideoIntegratedKSamplerSimple": {
+    "display_name": "🐳 WanVideo视频集成采样器(简单) - Github:﹫luguoli",
+    "description": "🐳 WanVideo视频集成采样器(简单) - Github: https://github.com/luguoli - K采样器简化版本，视频生成采样器，高低噪集成，专为高级用户设计，直接使用预条件模型的两阶段采样，不需要连那么多线啦~~~~ - 📧Email: luguoli﹫vip.qq.com",
+    "inputs": {
+      "model_high_noise": {
+        "name": "🔥 高噪模型",
+        "tooltip": "🔥 高噪模型 - 用于高噪阶段的扩散模型（第一阶段）"
+      },
+      "model_low_noise": {
+        "name": "❄️ 低噪模型",
+        "tooltip": "❄️ 低噪模型 - 用于低噪阶段的扩散模型（第二阶段）"
+      },
+      "steps_high_noise": {
+        "name": "📊 高噪步数",
+        "tooltip": "📊 高噪步数 - 高噪阶段的采样步数（第一阶段）"
+      },
+      "cfg_high_noise": {
+        "name": "🎛️ 高噪CFG",
+        "tooltip": "🎛️ 高噪CFG - 用于高噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"
+      },
+      "steps_low_noise": {
+        "name": "📊 低噪步数",
+        "tooltip": "📊 低噪步数 - 低噪阶段的采样步数（第二阶段）"
+      },
+      "cfg_low_noise": {
+        "name": "🎛️ 低噪CFG",
+        "tooltip": "🎛️ 低噪CFG - 用于低噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"
+      },
+      "noise_seed": {
+        "name": "🎲 噪波种子",
+        "tooltip": "🎲 噪波种子 - 噪波生成的随机种子，相同种子产生相同结果"
+      },
+      "sampler_name": {
+        "name": "🌀 采样器",
+        "tooltip": "🌀 采样器 - 采样算法，会影响结果质量、生成速度、风格样式。"
+      },
+      "scheduler": {
+        "name": "📈 调度器",
+        "tooltip": "📈 调度器 - 控制逐渐移除噪波的方法。"
+      },
+      "positive": {
+        "name": "✅ 正向条件",
+        "tooltip": "✅ 正向条件 - 预编码的正向条件输入"
+      },
+      "negative": {
+        "name": "❌ 负向条件",
+        "tooltip": "❌ 负向条件 - 预编码的负向条件输入"
+      },
+      "latent": {
+        "name": "🟣 Latent",
+        "tooltip": "🟣 Latent - 用于采样的潜空间输入"
+      }
+    }
+  }
+}
