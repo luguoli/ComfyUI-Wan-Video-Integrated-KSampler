@@ -1,0 +1,66 @@
+{
+  "WanVideoIntegratedKSampler": {
+    "title": "🐳 WanVideo视频集成采样器 - Github:@luguoli",
+    "description": "🐳 WanVideo视频集成采样器 - Github: https://github.com/luguoli - K采样器，视频生成采样器，高低噪集成，支持文生视频/图生视频模式，支持首尾帧生成视频，批量生成、自动显存/内存管理、sage注意力、块交换、SD3采样、声音通知等全方位功能，不需要连那么多线啦~~~~ - 📧Email: luguoli﹫vip.qq.com",
+    "inputs": {
+      "model_high_noise": "🔥 高噪模型",
+      "model_low_noise": "❄️ 低噪模型",
+      "clip": "🟡 CLIP",
+      "vae": "🎨 VAE",
+      "start_image": "🖼️ 首帧图像（可选）",
+      "end_image": "🖼️ 尾帧图像（可选）",
+      "clip_vision": "👁️ CLIP Vision（可选）",
+      "latent": "🟣 Latent（可空）"
+    },
+    "widgets": {
+      "positive_prompt": "✅ 正向提示词",
+      "negative_prompt": "❌ 负向提示词",
+      "batch_size": "📦 批次数量",
+      "length": "📽️ 帧长度",
+      "width": "📐 宽度",
+      "height": "📏 高度",
+      "steps_high_noise": "📊 高噪步数",
+      "cfg_high_noise": "🎛️ 高噪CFG",
+      "steps_low_noise": "📊 低噪步数",
+      "cfg_low_noise": "🎛️ 低噪CFG",
+      "noise_seed": "🎲 噪波种子",
+      "sampler_name": "🌀 采样器",
+      "scheduler": "📈 调度器",
+      "torch_enable_fp16_accumulation": "⚡ Torch FP16累加",
+      "sage_attention": "🧠 Sage注意力",
+      "wan_blocks_to_swap": "🔄 WAN块交换数量",
+      "sd3_shift": "⚙️ 采样算法SD3移位",
+      "enable_clean_gpu_memory": "🗑️ 清理显存占用",
+      "enable_clean_cpu_memory_after_finish": "🗑️ 完成后清理内存",
+      "enable_sound_notification": "🔊 完成后播放声音"
+    },
+    "outputs": {
+      "output_images": "生成图像序列FrameImages",
+      "last_image": "最后一帧LastFrameImage",
+      "latent_output": "（可选）Latent"
+    }
+  },
+  "WanVideoIntegratedKSamplerSimple": {
+    "title": "🐳 WanVideo视频集成采样器(简单) - Github:@luguoli",
+    "description": "🐳 WanVideo视频集成采样器(简单) - Github: https://github.com/luguoli - K采样器简化版本，视频生成采样器，高低噪集成，专为高级用户设计，直接使用预条件模型的两阶段采样，不需要连那么多线啦~~~~ - 📧Email: luguoli﹫vip.qq.com",
+    "inputs": {
+      "model_high_noise": "🔥 高噪模型",
+      "model_low_noise": "❄️ 低噪模型",
+      "positive": "✅ 正向条件",
+      "negative": "❌ 负向条件",
+      "latent": "🟣 Latent"
+    },
+    "widgets": {
+      "steps_high_noise": "📊 高噪步数",
+      "cfg_high_noise": "🎛️ 高噪CFG",
+      "steps_low_noise": "📊 低噪步数",
+      "cfg_low_noise": "🎛️ 低噪CFG",
+      "noise_seed": "🎲 噪波种子",
+      "sampler_name": "🌀 采样器",
+      "scheduler": "📈 调度器"
+    },
+    "outputs": {
+      "latent_output": "Latent"
+    }
+  }
+}

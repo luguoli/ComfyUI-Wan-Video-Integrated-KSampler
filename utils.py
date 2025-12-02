@@ -68,6 +68,12 @@ def common_ksampler(models, seed, steps, cfgs, sampler_name, scheduler, positive
                                     force_full_denoise=force_full_denoise_high_noise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
 
 
+        del noise
+        del callback
+        gc.collect()
+        comfy.model_management.soft_empty_cache() 
+
+
     if steps_low_noise > 0:
         print("Running low noise model...")
 
@@ -84,6 +90,10 @@ def common_ksampler(models, seed, steps, cfgs, sampler_name, scheduler, positive
         latent_image = comfy.sample.sample(model_low_noise, noise, total_steps, cfg_low_noise, sampler_name, scheduler, positive[1], negative[1], latent_image,
                                     denoise=denoise, disable_noise=disable_noise_low_noise, start_step=steps_high_noise, last_step=total_steps,
                                     force_full_denoise=force_full_denoise_low_noise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+        
+        del noise
+        del callback
+        comfy.model_management.soft_empty_cache()
 
     out = latent.copy()
     out["samples"] = latent_image

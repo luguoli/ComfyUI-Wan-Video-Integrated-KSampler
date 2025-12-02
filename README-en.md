@@ -1,4 +1,4 @@
-# 🐋 ComfyUI WanVideo Integrated KSampler
+# 🐳 ComfyUI WanVideo Integrated KSampler
 
 [![GitHub](https://img.shields.io/badge/GitHub-luguoli-orange)](https://github.com/luguoli)
 [![ComfyUI](https://img.shields.io/badge/ComfyUI-Custom%20Node-blue)](https://github.com/comfyanonymous/ComfyUI)
@@ -23,7 +23,6 @@ This is an integrated ComfyUI WanVideo generation sampler node. Compared to usin
 - **Separate High/Low Noise Settings**: Configure sampling steps and CFG values for high and low noise stages respectively
 - **Sage Attention Optimization**: Integrated multiple attention optimization modes supporting memory-efficient computation
 - **FP16 Accumulation**: Support Torch FP16 accumulation to improve VRAM utilization
-- **Block Swapping**: Support transformer block swapping to drastically reduce VRAM usage
 - **SD3 Sampling Integration**: Integrated SD3 sampling algorithm, no additional nodes needed
 
 ### 🖼️ Image Processing
@@ -125,13 +124,11 @@ This is an integrated ComfyUI WanVideo generation sampler node. Compared to usin
 - **CFG Value**: Default 1.0, recommended range 0.5-7.0
 - **FP16 Accumulation**: Recommended to enable
 - **Sage Attention**: Recommended to set to auto
-- **Block Swap**: For low-VRAM GPUs, recommend 20 or 30
 - **SD3 Shift**: Recommend setting to 5
 
 ### 💾 Memory Management
 - **GPU Memory Cleanup**: Enable enable_clean_gpu_memory to automatically clean VRAM before/after sampling
-- **CPU Memory Cleanup**: Enable enable_clean_cpu_memory_after_finish to clean RAM after completion (includes file cache, processes, dynamic libraries)
-- During continuous large-scale generation, always enable memory cleanup options to prevent memory overflow
+- **CPU Memory Cleanup**: Enable enable_clean_cpu_memory_after_finish to clean RAM after completion (includes file cache, processes, dynamic libraries),During continuous large-scale generation, always enable memory cleanup options to prevent memory overflow
 
 ### 🔊 Notification Function
 - **Sound Notification**: Only supported on Windows systems
@@ -139,6 +136,11 @@ This is an integrated ComfyUI WanVideo generation sampler node. Compared to usin
 ### 📞 Contact for Special Customization 📞
 - Author: @luguoli（墙上的向日葵）
 - Author Email: luguoli@vip.qq.com
+
+## 📝 Update Log
+### v1.0.1:
+- **Added translation script:** Starting from ComfyUI v0.3.68, Chinese language files became invalid. Added an automatic translation script. Double-click [自动汉化节点.bat] and restart ComfyUI. Requires ComfyUI-DD-Translation plugin to be installed.
+- **Removed block swap settings:** Latest ComfyUI version blocks block swapping, so this setting has been removed.
 
 ---
 

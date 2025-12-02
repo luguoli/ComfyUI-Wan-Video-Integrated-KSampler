@@ -23,37 +23,39 @@ class WanVideoIntegratedKSampler:
         sageattn_modes = ["disabled", "auto", "sageattn_qk_int8_pv_fp16_cuda", "sageattn_qk_int8_pv_fp16_triton", "sageattn_qk_int8_pv_fp8_cuda", "sageattn_qk_int8_pv_fp8_cuda++", "sageattn3", "sageattn3_per_block_mean"]
         return {
             "required": {
-                "model_high_noise": ("MODEL",),
-                "model_low_noise": ("MODEL",),
-                "clip": ("CLIP", ),
-                "vae": ("VAE", {}),
-                "positive_prompt": ("STRING", {"multiline": True, "dynamicPrompts": True, "placeholder": "正向提示词 positive_prompt"}),
-                "negative_prompt": ("STRING", {"multiline": True, "dynamicPrompts": True, "placeholder": "负向提示词 negative_prompt", "default": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"}),
-                "batch_size": ("INT", {"default": 1, "min": 1, "max": 10}),
-                "length": ("INT", {"default": 81, "min": 17, "max": 16384, "step": 4}),
-                "width": ("INT", {"default": 720, "min": 8, "max": 16384, "step": 8}),
-                "height": ("INT", {"default": 1280, "min": 8, "max": 16384, "step": 8}),
-                "steps_high_noise": ("INT", {"default": 4, "min": 0, "max": 10000}),
-                "cfg_high_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
-                "steps_low_noise": ("INT", {"default": 4, "min": 0, "max": 10000}),
-                "cfg_low_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
-                "noise_seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff, "control_after_generate": True}),
-                "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
-                "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
+                "model_high_noise": ("MODEL", {"tooltip": "🔥 高噪模型 - 用于高噪阶段（第一阶段）的扩散模型"}),
+                "model_low_noise": ("MODEL", {"tooltip": "❄️ 低噪模型 - 用于低噪阶段（第二阶段）的扩散模型"}),
+                "clip": ("CLIP", {"tooltip": "🟡 CLIP - CLIP模型，用于文本编码和条件生成"}),
+                "vae": ("VAE", {"tooltip": "🎨 VAE - VAE模型，用于编码/解码图像到潜空间"}),
+                "positive_prompt": ("STRING", {"multiline": True, "dynamicPrompts": True, "placeholder": "正向提示词 positive_prompt", "tooltip": "✅ 正向提示词 - 描述期望视频内容的文本提示"}),
+                "negative_prompt": ("STRING", {"multiline": True, "dynamicPrompts": True, "placeholder": "负向提示词 negative_prompt", "default": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走", "tooltip": "❌ 负向提示词 - 描述要避免的视频元素的文本提示"}),
+                "batch_size": ("INT", {"default": 1, "min": 1, "max": 10, "tooltip": "📦 批次数量 - 并行生成视频的数量"}),
+                "length": ("INT", {"default": 81, "min": 17, "max": 16384, "step": 4, "tooltip": "📽️ 帧长度 - 生成视频的帧数"}),
+                "width": ("INT", {"default": 720, "min": 8, "max": 16384, "step": 8, "tooltip": "📐 宽度 - 视频宽度像素（将自动调整为8的倍数）"}),
+                "height": ("INT", {"default": 1280, "min": 8, "max": 16384, "step": 8, "tooltip": "📏 高度 - 视频高度像素（将自动调整为8的倍数）"}),
+                "steps_high_noise": ("INT", {"default": 4, "min": 0, "max": 10000, "tooltip": "📊 高噪步数 - 高噪阶段的采样步数（第一阶段）"}),
+                "cfg_high_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01, "tooltip": "🎛️ 高噪CFG - 用于高噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"}),
+                "steps_low_noise": ("INT", {"default": 4, "min": 0, "max": 10000, "tooltip": "📊 低噪步数 - 低噪阶段的采样步数（第二阶段）"}),
+                "cfg_low_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01, "tooltip": "🎛️ 低噪CFG - 用于低噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"}),
+                "noise_seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff, "control_after_generate": True, "tooltip": "🎲 噪波种子 - 噪波生成的随机种子，相同种子产生相同结果"}),
+                "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"tooltip": "🌀 采样器 - 采样算法，会影响结果质量、生成速度、风格样式。"}),
+                "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"tooltip": "📈 调度器 - 控制逐渐移除噪波的方法。"}),
             },
             "optional": {
-                "start_image": ("IMAGE",),
-                # "middle_image": ("IMAGE",),
-                "end_image": ("IMAGE",),
-                "clip_vision": ("CLIP_VISION",),
-                "latent": ("LATENT", ),
-                "torch_enable_fp16_accumulation": ("BOOLEAN", {"default": True, "tooltip": "Enable torch.backends.cuda.matmul.allow_fp16_accumulation, requires pytorch 2.7.0 nightly."}),
-                "sage_attention": (sageattn_modes, {"default": "auto", "tooltip": "Global patch comfy attention to use sageattn, once patched to revert back to normal you would need to run this node again with disabled option."}),
-                "wan_blocks_to_swap": ("INT", {"default": 0, "min": 0, "max": 40, "step": 1, "tooltip": "Number of transformer blocks to swap, the 14B model has 40, while the 1.3B model has 30 blocks"}),
-                "sd3_shift": ("FLOAT", {"default": 5.0, "min": 0.0, "max": 100.0, "step":0.01}),
-                "enable_clean_gpu_memory": ("BOOLEAN", {"default": False}),
-                "enable_clean_cpu_memory_after_finish": ("BOOLEAN", {"default": False}),
-                "enable_sound_notification": ("BOOLEAN", {"default": False}),
+                "start_image": ("IMAGE", {"tooltip": "🖼️ 首帧图像（可选） - 不输入默认为文生视频"}),
+                # "middle_image": ("IMAGE",), # TODO:中间帧闪烁问题暂未解决
+                "end_image": ("IMAGE", {"tooltip": "🖼️ 尾帧图像（可选） - 必须同时输入首帧"}),
+                # "ref_image": ("IMAGE",), # TODO:ref_image只适用于fun模型，待测试
+                "clip_vision": ("CLIP_VISION", {"tooltip": "👁️ CLIP Vision（可选） - CLIP Vision模型，用于编码参考图像进行条件生成"}),
+                "latent": ("LATENT", {"tooltip": "🟣 Latent（可空） - 如需使用ControlNet等可自行传入，内置图像处理将失效，例如首尾帧"}),
+                "torch_enable_fp16_accumulation": ("BOOLEAN", {"default": True, "tooltip": "⚡ Torch FP16累加 - 启用torch.backend.cuda.matmul.allow_fp16_accumulation以获得更好的VRAM效率（需要pytorch 2.7.0+）"}),
+                "sage_attention": (sageattn_modes, {"default": "auto", "tooltip": "🧠 Sage注意力 - 全局修补comfy注意力以使用sageattn，大幅提升速度和VRAM使用效率"}),
+                # 块交换功能已经被comfyui从v0.3.69版本之后禁用
+                # "wan_blocks_to_swap": ("INT", {"default": 0, "min": 0, "max": 40, "step": 1, "tooltip": "🔄 WAN块交换数量 - 交换到CPU的transformer块数量以实现低VRAM使用（14B模型有40块，1.3B有30块）"}),
+                "sd3_shift": ("FLOAT", {"default": 5.0, "min": 0.0, "max": 100.0, "step":0.01, "tooltip": "⚙️ 采样算法SD3移位 - SD3采样算法移位参数，用于控制生成行为"}),
+                "enable_clean_gpu_memory": ("BOOLEAN", {"default": False, "tooltip": "🗑️ 清理显存占用 - 在采样/解码前后清理显存占用，以释放资源给其他应用"}),
+                "enable_clean_cpu_memory_after_finish": ("BOOLEAN", {"default": False, "tooltip": "🗑️ 完成后清理内存 - 生成完成后清理CPU内存"}),
+                "enable_sound_notification": ("BOOLEAN", {"default": False, "tooltip": "🔊 完成后播放声音 - 解码完成后播放通知声音以提醒用户"}),
                 # "middle_frame_ratio": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.01, "display": "slider",}),
             },
             "hidden": {
@@ -69,7 +71,7 @@ class WanVideoIntegratedKSampler:
     DESCRIPTION = "🐳 WanVideo视频集成采样器 - K采样器，视频生成采样器，高低噪集成，支持文生视频/图生视频模式，支持首尾帧生成视频，批量生成、自动显存/内存管理、sage注意力、块交换、SD3采样、声音通知等全方位功能，不需要连那么多线啦~~~~/🐳 WanVideo Integrated KSampler - K-sampler for video generation with integrated high/low noise stages, supports text-to-video/image-to-video modes, supports generating videos with start/end frames, batch generation, automatic VRAM/RAM management, sage attention, block swapping, SD3 sampling, sound notifications and more comprehensive features, no need to connect so many wires~~~~ - Github: https://github.com/luguoli - 📧Email: luguoli﹫vip.qq.com"
 
 
-    def sample(self, model_high_noise, model_low_noise, clip, vae, positive_prompt, negative_prompt, batch_size, length, width, height, steps_high_noise, cfg_high_noise, steps_low_noise, cfg_low_noise, noise_seed, sampler_name, scheduler, start_image=None, middle_image=None, end_image=None, clip_vision=None, latent=None, torch_enable_fp16_accumulation=False, sage_attention="disabled", wan_blocks_to_swap=0, sd3_shift=0, enable_clean_gpu_memory=False, enable_clean_cpu_memory_after_finish=False, enable_sound_notification=False, middle_frame_ratio=0.5, unique_id=0):
+    def sample(self, model_high_noise, model_low_noise, clip, vae, positive_prompt, negative_prompt, batch_size, length, width, height, steps_high_noise, cfg_high_noise, steps_low_noise, cfg_low_noise, noise_seed, sampler_name, scheduler, start_image=None, middle_image=None, end_image=None, ref_image=None, clip_vision=None, latent=None, torch_enable_fp16_accumulation=False, sage_attention="disabled", wan_blocks_to_swap=0, sd3_shift=0, enable_clean_gpu_memory=False, enable_clean_cpu_memory_after_finish=False, enable_sound_notification=False, middle_frame_ratio=0.5, unique_id=0):
 
 
         # 检查合法性
@@ -298,6 +300,8 @@ class WanVideoIntegratedKSampler:
         disable_noises = (False, True)
         force_full_denoises = (False, True)
 
+
+        print("开始进行CLIP编码... / Start CLIP encoding...")
         
         with tqdm(total=4, desc="CLIP Encoding Progress") as pbar:
             # 加载正向条件
@@ -363,6 +367,24 @@ class WanVideoIntegratedKSampler:
 
                 middle_idx = calculate_middle_frame_idx(middle_frame_ratio, length)
 
+
+
+                if enable_clean_gpu_memory:
+                    print("🗑️ VAE编码前清理显存...")
+                    try:
+                        cleanGPUUsedForce()
+                        remove_cache('*')
+                    except ImportError:
+                        print("🔕 显存清理失败/GPU memory cleaning failed")
+                    print("✅ 显存清理完成/GPU memory cleaning completed")
+
+                    # 显示可用显存（可选）
+                    try:
+                        free_mem = comfy.model_management.get_free_memory(vae.device) / (1024**3)
+                        print(f"✅ 清理后可用显存: {free_mem:.2f}GB")
+                    except:
+                        pass
+
                 if start_image is not None:
                     image_high_noise[:start_image.shape[0]] = start_image
                     image_low_noise[:start_image.shape[0]] = start_image
@@ -379,10 +401,13 @@ class WanVideoIntegratedKSampler:
                     image_high_noise[-end_image.shape[0]:] = end_image
                     image_low_noise[-end_image.shape[0]:] = end_image
                     mask_high_noise[:, :, -end_image.shape[0]:] = 0.0
-                    mask_low_noise[:, :, -end_image.shape[0]:] = 0.1
+                    mask_low_noise[:, :, -end_image.shape[0]:] = 0.1 # 结尾略微给一点自由度
 
+
+                # 全量编码
                 concat_latent_image_high_noise = vae.encode(image_high_noise[:, :, :, :3])
                 concat_latent_image_low_noise = vae.encode(image_low_noise[:, :, :, :3])
+
 
                 mask_high_noise = mask_high_noise.view(1, mask_high_noise.shape[2] // 4, 4, mask_high_noise.shape[3], mask_high_noise.shape[4]).transpose(1, 2)
                 mask_low_noise = mask_low_noise.view(1, mask_low_noise.shape[2] // 4, 4, mask_low_noise.shape[3], mask_low_noise.shape[4]).transpose(1, 2)
@@ -393,7 +418,34 @@ class WanVideoIntegratedKSampler:
                 positive_low_noise = node_helpers.conditioning_set_values(positive_low_noise, {"concat_latent_image": concat_latent_image_low_noise, "concat_mask": mask_low_noise})
                 negative_low_noise = node_helpers.conditioning_set_values(negative_low_noise, {"concat_latent_image": concat_latent_image_low_noise, "concat_mask": mask_low_noise})
 
-                
+
+                if ref_image is not None:
+                    ref_latents = []
+                    # 如果是单张图，把它包装成列表
+                    if isinstance(ref_image, torch.Tensor) and ref_image.ndim == 3:  # [H,W,C]
+                        ref_images = [ref_image]
+                    else:  # 假设多张图 [N,H,W,C]
+                        ref_images = ref_image
+
+                    for ref_img in ref_images:
+                        # -------------------
+                        # 如果是单张图，增加 batch 维度
+                        # -------------------
+                        if ref_img.ndim == 3:
+                            ref_img = ref_img.unsqueeze(0)  # [1,H,W,C]
+
+                        ref_img, resize_width, resize_height, resize_mask = image_resize(ref_img, width, height, "crop", "lanczos", 2, "0, 0, 0", "center", unique_id=unique_id, device="cpu", mask=None, per_batch=64)
+                        # 统一先 upscale + 转通道
+                        ref_img = comfy.utils.common_upscale(ref_img[:1].movedim(-1, 1), resize_width, resize_height, "bilinear", "center").movedim(1, -1)
+                        # encode latent
+                        ref_latent = vae.encode(ref_img[:, :, :, :3])
+                        ref_latents.append(ref_latent)
+
+                    positive_high_noise = node_helpers.conditioning_set_values(positive_high_noise, {"reference_latents": ref_latents}, append=True)
+                    negative_high_noise = node_helpers.conditioning_set_values(negative_high_noise, {"reference_latents": ref_latents}, append=True)
+                    positive_low_noise = node_helpers.conditioning_set_values(positive_low_noise, {"reference_latents": ref_latents}, append=True)
+                    negative_low_noise = node_helpers.conditioning_set_values(negative_low_noise, {"reference_latents": ref_latents}, append=True)
+
 
                 clip_vision_list = []
 
@@ -483,8 +535,8 @@ class WanVideoIntegratedKSampler:
             try:
                 import winsound
                 import time
-                # 播放快速紧凑的旋律：A4, C5, E5, G5，较短间隔使旋律连贯
-                frequencies = [440, 523, 659, 784]
+                # 播放快速紧凑的旋律：A4, C5, E5, G5, E5, G5，较短间隔使旋律连贯
+                frequencies = [440, 523, 659, 784, 659, 784]
                 for freq in frequencies:
                     winsound.Beep(freq, 150)
                     time.sleep(0.005)  # 更短间隔加快节奏
@@ -506,18 +558,18 @@ class WanVideoIntegratedKSamplerSimple:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "model_high_noise": ("MODEL",),
-                "model_low_noise": ("MODEL",),
-                "steps_high_noise": ("INT", {"default": 4, "min": 0, "max": 10000}),
-                "cfg_high_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
-                "steps_low_noise": ("INT", {"default": 4, "min": 0, "max": 10000}),
-                "cfg_low_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01}),
-                "noise_seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff, "control_after_generate": True}),
-                "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
-                "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
-                "positive": ("CONDITIONING", ),
-                "negative": ("CONDITIONING", ),
-                "latent": ("LATENT", ),
+                "model_high_noise": ("MODEL", {"tooltip": "🔥 高噪模型 - 用于高噪阶段的扩散模型（第一阶段）"}),
+                "model_low_noise": ("MODEL", {"tooltip": "❄️ 低噪模型 - 用于低噪阶段的扩散模型（第二阶段）"}),
+                "steps_high_noise": ("INT", {"default": 4, "min": 0, "max": 10000, "tooltip": "📊 高噪步数 - 高噪阶段的采样步数（第一阶段）"}),
+                "cfg_high_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01, "tooltip": "🎛️ 高噪CFG - 用于高噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"}),
+                "steps_low_noise": ("INT", {"default": 4, "min": 0, "max": 10000, "tooltip": "📊 低噪步数 - 低噪阶段的采样步数（第二阶段）"}),
+                "cfg_low_noise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step":0.1, "round": 0.01, "tooltip": "🎛️ 低噪CFG - 用于低噪阶段平衡随机性和提示词服从性。提高该值会使结果更加符合提示词，但过高会导致质量下降。"}),
+                "noise_seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff, "control_after_generate": True, "tooltip": "🎲 噪波种子 - 噪波生成的随机种子，相同种子产生相同结果"}),
+                "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"tooltip": "🌀 采样器 - 采样算法，会影响结果质量、生成速度、风格样式。"}),
+                "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"tooltip": "📈 调度器 - 控制逐渐移除噪波的方法。"}),
+                "positive": ("CONDITIONING", {"tooltip": "✅ 正向条件 - 预编码的正向条件输入"}),
+                "negative": ("CONDITIONING", {"tooltip": "❌ 负向条件 - 预编码的负向条件输入"}),
+                "latent": ("LATENT", {"tooltip": "🟣 Latent - 用于采样的潜空间输入"}),
             },
         }
 

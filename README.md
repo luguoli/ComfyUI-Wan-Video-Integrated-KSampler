@@ -1,4 +1,4 @@
-# 🐋 ComfyUI 万相视频WanVideo集成采样器（Wan Video Integrated KSampler）
+# 🐳 ComfyUI 万相视频WanVideo集成采样器（Wan Video Integrated KSampler）
 
 [![GitHub](https://img.shields.io/badge/GitHub-luguoli-orange)](https://github.com/luguoli)
 [![ComfyUI](https://img.shields.io/badge/ComfyUI-自定义节点-blue)](https://github.com/comfyanonymous/ComfyUI)
@@ -23,7 +23,6 @@ WanVideoIntegratedKSampler
 - **高低噪分步设置**: 分别设置高噪和低噪的采样步数、CFG值
 - **Sage注意力优化**: 集成多个注意力优化模式，支持内存高效计算
 - **FP16累加**: 支持torch FP16累加提高显存利用率
-- **块交换**: 支持transformer块交换，大幅降低显存占用
 - **采样算法（SD3）集成**: 集成了采样算法（SD3），无需另外连线
 
 ### 🖼️ 图像处理
@@ -128,14 +127,12 @@ WanVideoIntegratedKSampler
 - **CFG值**：默认1.0，推荐0.5-7.0范围
 - **FP16累加**: 建议开启
 - **Sage注意力优化**: 建议设置为自动
-- **块交换**: 底显存建议设置为20或30
 - **采样算法（SD3）移位**: 建议设置为5
 
 
 ### 💾 内存管理
 - **GPU内存清理**：启用enable_clean_gpu_memory选项，在生成前/后自动清理VRAM
-- **CPU内存清理**：启用enable_clean_cpu_memory_after_finish，生成结束后清理RAM（包含文件缓存、进程、动态库）
-- 连续大量生成时建议始终启用内存清理选项以防止内存溢出
+- **CPU内存清理**：启用enable_clean_cpu_memory_after_finish，生成结束后清理RAM（包含文件缓存、进程、动态库），连续大量生成时建议始终启用内存清理选项以防止内存溢出
 
 ### 🔊 通知功能
 - **声音通知**：仅在Windows系统支持
@@ -144,6 +141,11 @@ WanVideoIntegratedKSampler
 - 作者：@luguoli（墙上的向日葵）
 - 作者邮箱：luguoli@vip.qq.com
 
+
+## 📝 更新记录
+### v1.0.1：
+- **增加汉化脚本：** ComfyUI从v0.3.68开始中文语言文件失效，增加自动汉化脚本，双击执行【自动汉化节点.bat】后重启ComfyUI即可，需要安装ComfyUI-DD-Translation插件
+- **移除块交换设置：** ComfyUI最新版本已阻止块交换，移除此设置
 
 ---
 
