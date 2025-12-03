@@ -137,15 +137,16 @@ WanVideoIntegratedKSampler
 ### 🔊 通知功能
 - **声音通知**：仅在Windows系统支持
 
-### 📞 需要特别定制请联系 📞 
-- 作者：@luguoli（墙上的向日葵）
-- 作者邮箱：luguoli@vip.qq.com
-
 
 ## 📝 更新记录
 ### v1.0.1：
 - **增加汉化脚本：** ComfyUI从v0.3.68开始中文语言文件失效，增加自动汉化脚本，双击执行【自动汉化节点.bat】后重启ComfyUI即可，需要安装ComfyUI-DD-Translation插件
 - **移除块交换设置：** ComfyUI最新版本已阻止块交换，移除此设置
+
+
+## 📞 需要特别定制请联系 📞 
+- 作者：@luguoli（墙上的向日葵）
+- 作者邮箱：luguoli@vip.qq.com
 
 ---
 

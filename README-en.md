@@ -133,14 +133,17 @@ This is an integrated ComfyUI WanVideo generation sampler node. Compared to usin
 ### 🔊 Notification Function
 - **Sound Notification**: Only supported on Windows systems
 
-### 📞 Contact for Special Customization 📞
-- Author: @luguoli（墙上的向日葵）
-- Author Email: luguoli@vip.qq.com
 
 ## 📝 Update Log
 ### v1.0.1:
 - **Added translation script:** Starting from ComfyUI v0.3.68, Chinese language files became invalid. Added an automatic translation script. Double-click [自动汉化节点.bat] and restart ComfyUI. Requires ComfyUI-DD-Translation plugin to be installed.
 - **Removed block swap settings:** Latest ComfyUI version blocks block swapping, so this setting has been removed.
+
+
+## 📞 Contact for Special Customization 📞
+- Author: @luguoli（墙上的向日葵）
+- Author Email: luguoli@vip.qq.com
+
 
 ---
 
