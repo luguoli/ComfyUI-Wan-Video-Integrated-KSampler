@@ -32,7 +32,8 @@
       "sd3_shift": "⚙️ 采样算法SD3移位",
       "enable_clean_gpu_memory": "🗑️ 清理显存占用",
       "enable_clean_cpu_memory_after_finish": "🗑️ 完成后清理内存",
-      "enable_sound_notification": "🔊 完成后播放声音"
+      "enable_sound_notification": "🔊 完成后播放声音",
+      "motion_amplitude": "🏃 运动幅度增强"
     },
     "outputs": {
       "output_images": "生成图像序列FrameImages",

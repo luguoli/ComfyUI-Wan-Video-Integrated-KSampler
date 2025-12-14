@@ -57,6 +57,7 @@ class WanVideoIntegratedKSampler:
                 "enable_clean_cpu_memory_after_finish": ("BOOLEAN", {"default": False, "tooltip": "🗑️ 完成后清理内存 - 生成完成后清理CPU内存"}),
                 "enable_sound_notification": ("BOOLEAN", {"default": False, "tooltip": "🔊 完成后播放声音 - 解码完成后播放通知声音以提醒用户"}),
                 # "middle_frame_ratio": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.01, "display": "slider",}),
+                "motion_amplitude": ("FLOAT", {"default": 1.0, "min": 1.0, "max": 2.0, "step":0.05, "tooltip": "🏃 运动幅度增强 - 只作用于高噪阶段，只在首尾帧生成时且大于1.0时生效，1.0为完全不增强，最大2.0"}),
             },
             "hidden": {
                 "unique_id": "UNIQUE_ID",
@@ -71,7 +72,7 @@ class WanVideoIntegratedKSampler:
     DESCRIPTION = "🐳 WanVideo视频集成采样器 - K采样器，视频生成采样器，高低噪集成，支持文生视频/图生视频模式，支持首尾帧生成视频，批量生成、自动显存/内存管理、sage注意力、块交换、SD3采样、声音通知等全方位功能，不需要连那么多线啦~~~~/🐳 WanVideo Integrated KSampler - K-sampler for video generation with integrated high/low noise stages, supports text-to-video/image-to-video modes, supports generating videos with start/end frames, batch generation, automatic VRAM/RAM management, sage attention, block swapping, SD3 sampling, sound notifications and more comprehensive features, no need to connect so many wires~~~~ - Github: https://github.com/luguoli - 📧Email: luguoli﹫vip.qq.com"
 
 
-    def sample(self, model_high_noise, model_low_noise, clip, vae, positive_prompt, negative_prompt, batch_size, length, width, height, steps_high_noise, cfg_high_noise, steps_low_noise, cfg_low_noise, noise_seed, sampler_name, scheduler, start_image=None, middle_image=None, end_image=None, ref_image=None, clip_vision=None, latent=None, torch_enable_fp16_accumulation=False, sage_attention="disabled", wan_blocks_to_swap=0, sd3_shift=0, enable_clean_gpu_memory=False, enable_clean_cpu_memory_after_finish=False, enable_sound_notification=False, middle_frame_ratio=0.5, unique_id=0):
+    def sample(self, model_high_noise, model_low_noise, clip, vae, positive_prompt, negative_prompt, batch_size, length, width, height, steps_high_noise, cfg_high_noise, steps_low_noise, cfg_low_noise, noise_seed, sampler_name, scheduler, start_image=None, middle_image=None, end_image=None, ref_image=None, clip_vision=None, latent=None, torch_enable_fp16_accumulation=False, sage_attention="disabled", wan_blocks_to_swap=0, sd3_shift=0, enable_clean_gpu_memory=False, enable_clean_cpu_memory_after_finish=False, enable_sound_notification=False, middle_frame_ratio=0.5, motion_amplitude=1.0, unique_id=0):
 
 
         # 检查合法性
@@ -407,6 +408,60 @@ class WanVideoIntegratedKSampler:
                 # 全量编码
                 concat_latent_image_high_noise = vae.encode(image_high_noise[:, :, :, :3])
                 concat_latent_image_low_noise = vae.encode(image_low_noise[:, :, :, :3])
+
+
+                def get_motion_latent(official_latent, motion_amplitude = 1.0):
+
+                    # 参考：https://github.com/princepainter/Comfyui-PainterFLF2V
+
+                    # 仅当 amplitude > 1.0 时触发增强逻辑
+                    if length > 2 and motion_amplitude > 1.001 and start_image is not None and end_image is not None:
+
+                        # [线性基准]: 用来计算"慢动作"特征
+                        start_l = official_latent[:, :, 0:1]
+                        end_l   = official_latent[:, :, -1:]
+                        t = torch.linspace(0.0, 1.0, official_latent.shape[2], device=official_latent.device).view(1, 1, -1, 1, 1)
+                        linear_latent = start_l * (1 - t) + end_l * t
+                    
+                        # ==================== 核心算法：反向结构斥力 (Inverse Structural Repulsion) ====================
+                        # A. 计算差异向量 (Anti-Ghost Vector)
+                        # diff = 官方(灰) - 线性(PPT)
+                        # 这个向量实际上包含了"去除PPT重影"所需的信息
+                        diff = official_latent - linear_latent
+                        
+                        # B. 频率分离 (绝对保护颜色)
+                        h, w = diff.shape[-2], diff.shape[-1]
+                        # 提取低频 (颜色)
+                        low_freq_diff = F.interpolate(diff.view(-1, vae.latent_channels, h, w), 
+                                                    size=(h // 8, w // 8), mode='area')
+                        low_freq_diff = F.interpolate(low_freq_diff, size=(h, w), mode='bilinear')
+                        low_freq_diff = low_freq_diff.view_as(diff)
+                        
+                        # 提取高频 (结构/重影)
+                        high_freq_diff = diff - low_freq_diff
+                        
+                        # C. 暴力增强系数计算
+                        # 将 1.0-2.0 的输入映射到 0.0-4.0 的内部强度
+                        # 你觉得之前不明显，是因为系数太小。现在 2.0 对应 4倍 强度。
+                        boost_scale = (motion_amplitude - 1.0) * 4.0
+                        
+                        # D. 最终合成
+                        # Base: 官方 Latent (保证 1.0 时一致)
+                        # Boost: 高频差异 * 强度
+                        # 注意：我们完全丢弃了 low_freq_diff 的增强，这意味着颜色永远不动。
+                        # 我们只把 high_freq_diff (反向去除重影) 疯狂放大。
+                        
+                        result_latent_image = official_latent + (high_freq_diff * boost_scale)
+                        
+                    else:
+                        # 1.0 模式：直接输出官方 Latent
+                        result_latent_image = official_latent
+
+                    return result_latent_image
+
+
+                # 运动幅度增强，只作用于高噪阶段
+                concat_latent_image_high_noise = get_motion_latent(concat_latent_image_high_noise, motion_amplitude = motion_amplitude)
 
 
                 mask_high_noise = mask_high_noise.view(1, mask_high_noise.shape[2] // 4, 4, mask_high_noise.shape[3], mask_high_noise.shape[4]).transpose(1, 2)

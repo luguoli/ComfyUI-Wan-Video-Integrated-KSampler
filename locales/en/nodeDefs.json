@@ -114,6 +114,10 @@
       "enable_sound_notification": {
         "name": "🔊 Sound Notification",
         "tooltip": "🔊 Sound Notification - Play notification sound when generation completes"
+      },
+      "motion_amplitude": {
+        "name": "🏃 Motion Amplitude",
+        "tooltip": "🏃 Motion Amplitude - Motion amplitude enhancement, only affects high noise phase, only takes effect during start/end frame generation when greater than 1.0, 1.0 means no enhancement, maximum 2.0"
       }
     },
     "WanVideoIntegratedKSamplerSimple": {

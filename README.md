@@ -24,6 +24,7 @@ This is an integrated ComfyUI WanVideo generation sampler node. Compared to usin
 - **Sage Attention Optimization**: Integrated multiple attention optimization modes supporting memory-efficient computation
 - **FP16 Accumulation**: Support Torch FP16 accumulation to improve VRAM utilization
 - **SD3 Sampling Integration**: Integrated SD3 sampling algorithm, no additional nodes needed
+- **Motion Amplitude Enhancement**: Integrated motion amplitude enhancement to improve video motion effects, reference project: PainterFLF2V
 
 ### 🖼️ Image Processing
 - **Integrated Prompt Input**: Integrated prompt input box, no additional nodes needed
@@ -125,6 +126,7 @@ This is an integrated ComfyUI WanVideo generation sampler node. Compared to usin
 - **FP16 Accumulation**: Recommended to enable
 - **Sage Attention**: Recommended to set to auto
 - **SD3 Shift**: Recommend setting to 5
+- **Motion Amplitude**: Default 1.0 (no enhancement), increase above 1.0 for stronger motion when using start/end frames
 
 ### 💾 Memory Management
 - **GPU Memory Cleanup**: Enable enable_clean_gpu_memory to automatically clean VRAM before/after sampling
