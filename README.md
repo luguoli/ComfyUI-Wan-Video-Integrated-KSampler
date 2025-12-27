@@ -7,7 +7,7 @@
 
 WanVideoIntegratedKSampler
 
-This is an integrated ComfyUI WanVideo generation sampler node. Compared to using the official K-sampler, it eliminates the messy connections, supporting both text-to-video and image-to-video generation. It integrates dual-model sampling for high and low noise, single-frame generation, start/end frame generation, automatic GPU/RAM memory cleanup, batch generation, various attention optimizations, and more. Moms no longer have to worry about messy connections~~~~
+This is an integrated ComfyUI WanVideo generation sampler node. Compared to using the official K-sampler, it eliminates the messy connections, supporting both text-to-video and image-to-video generation. It integrates dual-model sampling for high and low noise, single-frame generation, start/end frame generation, Motion Amplitude Enhancement, automatic GPU/RAM memory cleanup, batch generation, various attention optimizations, and more. Moms no longer have to worry about messy connections~~~~
 
 #### If this project helps you, please give it a ⭐Star — it lets me know there are humans out there using it!
 

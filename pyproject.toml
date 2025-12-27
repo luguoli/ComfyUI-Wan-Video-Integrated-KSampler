@@ -1,6 +1,6 @@
 [project]
 name = "ComfyUI-Wan-Video-Integrated-KSampler"
-description = "WanVideo Integrated KSampler - Github: https://github.com/luguoli - K-sampler for video generation with integrated high/low noise stages, supports text-to-video/image-to-video modes, supports generating videos with start/end frames, batch generation, automatic VRAM/RAM management, sage attention, block swapping, SD3 sampling, sound notifications and more comprehensive features, no need to connect so many wires~~~~"
+description = "WanVideo Integrated KSampler - Github: https://github.com/luguoli - K-sampler for video generation with integrated high/low noise stages,supports generating videos with start/end frames,automatic VRAM/RAM management, sage attention, block swapping, SD3 sampling"
 version = "1.0.2"
 license = {file = "LICENSE"} 
 # classifiers = [
